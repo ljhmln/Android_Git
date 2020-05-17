@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/host"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TabWidget
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@android:id/tabs"
+            android:background="#f0f888"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@android:id/tabcontent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="weather + fly + jagijang"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:id="@+id/content1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="search"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:id="@+id/content2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="map"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:id="@+id/content3"/>
+        </FrameLayout>
+
+    </LinearLayout>
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/main"/>-->
+
+
+
+
+</TabHost>
