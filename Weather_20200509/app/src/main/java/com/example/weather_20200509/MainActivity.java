@@ -14,9 +14,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView content1;
 
 
     @Override
@@ -24,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TabHost host = findViewById(R.id.host);
+
+        content1 = (TextView) findViewById(R.id.content1);
+
         host.setup();
 
         TabHost.TabSpec spec = host.newTabSpec("tab1");
         spec.setIndicator(null, ResourcesCompat.getDrawable(getResources(), R.drawable.tab_icon1, null));
-
-        spec.setContent(R.id.content1);
+//        content1.setText("여기에");
+        spec.setContent(R.layout.fragsun);
         host.addTab(spec);
 
         spec = host.newTabSpec("tab2");
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         spec.setContent(R.id.content3);
         host.addTab(spec);
     }
+
 
 
 

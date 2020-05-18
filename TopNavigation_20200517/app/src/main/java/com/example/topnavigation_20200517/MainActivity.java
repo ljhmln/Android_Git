@@ -6,19 +6,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.os.AsyncTask;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    String html = "https://spaceweather.rra.go.kr/api/kindex";
 
     private BottomNavigationView navigationView; // 탑 네비게이션 뷰
     private FragmentManager fm;
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private frag1 frag1;
     private frag2 frag2;
     private frag3 frag3;
+    private frag1Thread frag1Thread;
+    TextView Advertising;
+
+
 
 
     @Override
@@ -33,19 +41,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+       Advertising = findViewById(R.id.advertising);
+
+
+
         navigationView = findViewById(R.id.topNavi);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
 
-                switch (menuItem.getItemId()){
-                    case R.id.action_sun:
-                        setFrag(0);
-                        break;
-                    case R.id.action_map:
-                        setFrag(1);
-                        break;
+                        switch (menuItem.getItemId()){
+                            case R.id.action_sun:
+                                frag1Thread thread = new frag1Thread();
+                                thread.start();
+                                setFrag(0);
+                                break;
+                            case R.id.action_map:
+                                setFrag(1);
+                                break;
                     case R.id.action_web:
                         setFrag(2);
                         break;
@@ -58,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         frag3 = new frag3();
 
         setFrag(0);
+
+
 
     }
         //프래그 교체되는 실행문
@@ -82,34 +98,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class JsoupAsyncTask extends AsyncTask<Void, Void, Void>  {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try{
-                Document document = Jsoup.connect(html).get();
-                Log.i("TAG", "Msg : " + document    );
-            }catch (IOException e){
-                e.printStackTrace();
-
-            }
-            return null;
-        }
-    }
 
 }

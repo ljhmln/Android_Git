@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TopNavigation_20200517/app/src/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/TopNavigation_20200517/app/src/androidTest/androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Weather_20200509/app/src/androidTest/androidTest1.iml" filepath="$PROJECT_DIR$/Weather_20200509/app/src/androidTest/androidTest1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TopNavigation_20200517/app/src/main/main.iml" filepath="$PROJECT_DIR$/TopNavigation_20200517/app/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Weather_20200509/app/src/main/main1.iml" filepath="$PROJECT_DIR$/Weather_20200509/app/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Weather_20200509/app/src/test/test.iml" filepath="$PROJECT_DIR$/Weather_20200509/app/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TopNavigation_20200517/app/src/test/test1.iml" filepath="$PROJECT_DIR$/TopNavigation_20200517/app/src/test/test1.iml" />
+    </modules>
+  </component>
+</project>
