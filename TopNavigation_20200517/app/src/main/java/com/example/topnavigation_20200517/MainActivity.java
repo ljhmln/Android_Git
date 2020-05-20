@@ -6,23 +6,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
-import android.os.AsyncTask;
 import android.widget.TextView;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+
+    private BackPressCloseHandler backPressCloseHandler;
+
 
     private BottomNavigationView navigationView; // 탑 네비게이션 뷰
     private FragmentManager fm;
@@ -30,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private frag1 frag1;
     private frag2 frag2;
     private frag3 frag3;
-    private frag1Thread frag1Thread;
+
     TextView Advertising;
 
 
@@ -42,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
        Advertising = findViewById(R.id.advertising);
+       backPressCloseHandler = new BackPressCloseHandler(this);
 
 
 
@@ -53,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (menuItem.getItemId()){
                             case R.id.action_sun:
-                                frag1Thread thread = new frag1Thread();
-                                thread.start();
+
                                 setFrag(0);
                                 break;
                             case R.id.action_map:
@@ -99,4 +92,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+       backPressCloseHandler.onBackPressed();
+    }
 }

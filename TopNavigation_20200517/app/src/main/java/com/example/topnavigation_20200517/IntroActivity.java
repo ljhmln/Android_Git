@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class IntroActivity extends AppCompatActivity {
 
+//    private final int LODING_DISPLAY_TIME = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,15 +21,21 @@ public class IntroActivity extends AppCompatActivity {
         IntroThread introThread = new IntroThread(handler);
         introThread.start();
 
+
+
     }
 
     Handler handler = new Handler(){
+
         @Override
         public void handleMessage( Message msg) {
             if(msg.what == 1){
                 Intent intent = new Intent(IntroActivity.this, MainActivity.class);
                 startActivity(intent);
+                IntroActivity.this.finish();
             }
         }
     };
+
+
 }
