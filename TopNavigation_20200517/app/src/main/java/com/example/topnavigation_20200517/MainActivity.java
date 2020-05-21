@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("드론날다 :3");
 
        Advertising = findViewById(R.id.advertising);
        backPressCloseHandler = new BackPressCloseHandler(this);
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (menuItem.getItemId()){
                             case R.id.action_sun:
-
                                 setFrag(0);
                                 break;
                             case R.id.action_map:
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         switch (n){
             case 0:
                 ft.replace(R.id.frame, frag1);
+
                 ft.commit();
                 break;
             case 1:
