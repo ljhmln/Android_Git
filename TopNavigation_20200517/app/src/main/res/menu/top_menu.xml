@@ -3,17 +3,17 @@
 <item
     android:id="@+id/action_sun"
     android:enabled="true"
-    android:icon="@drawable/ic_wb_sunny_black_24dp"
+    android:icon="@drawable/weather"
     android:title="상태"/>
 <item
     android:id="@+id/action_map"
     android:enabled="true"
-    android:icon="@drawable/ic_place_black_24dp"
+    android:icon="@drawable/maps"
     android:title="지도"/>
 <item
     android:id="@+id/action_web"
     android:enabled="true"
-    android:icon="@drawable/ic_language_black_24dp"
+    android:icon="@drawable/www"
     android:title="www"/>
 
 </menu>

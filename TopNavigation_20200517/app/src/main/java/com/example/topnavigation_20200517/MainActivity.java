@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         navigationView = findViewById(R.id.topNavi);
+        navigationView.setItemIconTintList(null);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
