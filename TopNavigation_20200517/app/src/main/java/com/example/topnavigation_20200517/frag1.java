@@ -1,47 +1,37 @@
 package com.example.topnavigation_20200517;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.media.Image;
-import android.os.AsyncTask;
-import android.os.Build;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
-import com.google.android.gms.location.LocationListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+
 import java.net.URL;
-import java.net.URLEncoder;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
 public class frag1 extends Fragment {
     private View view;
-    private FragmentActivity mcontext;
+    MyHandler myHandler;
 
     SimpleDateFormat getDate = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat getTime = new SimpleDateFormat("kkmm");
@@ -77,8 +67,8 @@ public class frag1 extends Fragment {
     String wind_speed; //풍속
     String temperatures; // 기온
     String humidity; //습도
-    double longitude=126.97; //경도
-    double latitude=37.56; //위도
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,8 +79,7 @@ public class frag1 extends Fragment {
         wind_speedText = view.findViewById(R.id.wind_speed);
         Advertising = view.findViewById(R.id.advertising);
         currentP = view.findViewById(R.id.currentP);
-
-
+        myHandler = new MyHandler();
         frag1Thread thread = new frag1Thread();
         thread.start();
         return view;
@@ -104,8 +93,6 @@ public class frag1 extends Fragment {
         nowDate = getDate.format(date);
         nowTime = getTime.format(date);
 
-        getLocation();//위치값 받기
-
         nowHours = getHours.format(new Date());
         nowMinute = getMinute.format(new Date());
 
@@ -113,29 +100,17 @@ public class frag1 extends Fragment {
         nowMinuteInt  = Integer.parseInt(nowMinute);
         getTime();
 
-        getJson(1);
-        getJson(2);
+                        getJson(1);
+                        getJson(2);
 
-
+//        myHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
             }
         }
-
-        //현위치를 받아오는 메소드
-    public void getLocation() {
-        final LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-
-        if (ContextCompat.checkSelfPermission(this.getActivity(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-
-        } else {
-            Toast.makeText(this.getActivity(),"위치정보를 파악하려면 위치추적 허가를 하셔야 합니다.",Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void getTime(){
 
@@ -190,7 +165,19 @@ public class frag1 extends Fragment {
                     JSONObject jsonObject2 = jsonObject1.getJSONObject("kindex");
                     int cu = jsonObject2.getInt("currentP");
                     value = String.valueOf(cu);
-                    currentP.setText(value + "kp");
+                    final String finalValue = value;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    currentP.setText(finalValue + "kp");
+                                }
+                            });
+                        }
+                    }).start();
+
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -227,7 +214,18 @@ public class frag1 extends Fragment {
                         switch (category) {
                             case "T1H": //기온
                                 temperatures = weatherJson.getString("fcstValue");
-                                temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                            }
+                                        });
+                                    }
+                                }).start();
+
                                 continue;
                             case "PTY": // 비, 눈
                                 skyStr = weatherJson.getString("fcstValue");
@@ -248,7 +246,17 @@ public class frag1 extends Fragment {
                                         skyStr = "소나기";
                                     }
                                 }
-                                temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                            }
+                                        });
+                                    }
+                                }).start();
                                     continue;
 
                                     case "SKY": //하늘
@@ -266,7 +274,17 @@ public class frag1 extends Fragment {
                                                 skyStr = "흐림";
                                                 System.out.println("4, 흐림");
                                             }
-                                            temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                            new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    myHandler.post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            temperaturesText.setText(temperatures + "˚  |  " + skyStr);
+                                                        }
+                                                    });
+                                                }
+                                            }).start();
                                             continue;
                                         }
 
@@ -274,7 +292,18 @@ public class frag1 extends Fragment {
                                     case "REH": //습도
                                         humidity = weatherJson.getString("fcstValue");
                                         humidityInt = Integer.parseInt(humidity);
-                                        humidityText.setText(humidity + "%");
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                myHandler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        humidityText.setText(humidity + "%");
+                                                    }
+                                                });
+                                            }
+                                        }).start();
+
                                         continue;
                                     case "WSD": //풍속
                                         wind_speed = weatherJson.getString("fcstValue");
@@ -282,7 +311,6 @@ public class frag1 extends Fragment {
 
                                 if(wind < 4){ //바람이 약하다
                                     wind_speed = wind + "m/s  |  보통";
-
 
                                 }else if(wind >= 4 && wind <9) { //바람이 약간 강하다
                                     wind_speed = wind + "m/s  |  약간 강";
@@ -294,52 +322,208 @@ public class frag1 extends Fragment {
                                     wind_speed = wind + "m/s  |  매우 강";
 
                                 }
-                                wind_speedText.setText(wind_speed);
+//                                wind_speedText.setText(wind_speed);
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                myHandler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        wind_speedText.setText(wind_speed);
+                                                    }
+                                                });
+                                            }
+                                        }).start();
                                         continue;
                                 }
 
                                continue;
                     }
+                    //드론 이미지 변경
                     if(wind <=4 && humidityInt <= 80 && skyStr.equals("1")){ //적당
-                        droneImage.setImageResource(R.drawable.droneok);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        droneImage.setImageResource(R.drawable.droneok);
+                                    }
+                                });
+                            }
+                        }).start();
+
                     }else if(humidityInt >= 81 && 5 <= wind  && wind >=6 && skyStr.equals("3") && skyStr.equals("4")) {  //주의
-                        droneImage.setImageResource(R.drawable.droneheed);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        droneImage.setImageResource(R.drawable.droneheed);
+                                    }
+                                });
+                            }
+                        }).start();
                         if(humidityInt >= 81){
-                            humidityText.setText("! " + humidity + "%");
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            humidityText.setText("! " + humidity + "%");
+                                        }
+                                    });
+                                }
+                            }).start();
+
                             if(5 <= wind  && wind >=6 && skyStr.equals("3") && skyStr.equals("4")){
-                                wind_speedText.setText("! "+ wind_speed);
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                wind_speedText.setText("! "+ wind_speed);
+                                            }
+                                        });
+                                    }
+                                }).start();
                                 if(skyStr.equals("3") && skyStr.equals("4")){
-                                    temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+                                                }
+                                            });
+                                        }
+                                    }).start();
                                 }
                             }
                         }else if(5 <= wind  && wind >=6){
-                            wind_speedText.setText("! "+ wind_speed);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            wind_speedText.setText("! "+ wind_speed);
+                                        }
+                                    });
+                                }
+                            }).start();
                             if(humidityInt >= 81){
-                                humidityText.setText("! " + humidity + "%");
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                humidityText.setText("! " + humidity + "%");
+                                            }
+                                        });
+                                    }
+                                }).start();
                                 if(skyStr.equals("3") && skyStr.equals("4")){
-                                    temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+                                                }
+                                            });
+                                        }
+                                    }).start();
                                 }
                             }
                         }else if(skyStr.equals("3") && skyStr.equals("4")){
-                            temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            temperaturesText.setText("! "+ temperatures + "˚  |  " + skyStr);
+                                        }
+                                    });
+                                }
+                            }).start();
                             if(5 <= wind  && wind >=6) {
-                                wind_speedText.setText("! " + wind_speed);
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                wind_speedText.setText("! " + wind_speed);
+                                            }
+                                        });
+                                    }
+                                }).start();
                                 if(humidityInt >= 81){
-                                    humidityText.setText("! " + humidity + "%");
+
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    humidityText.setText("! " + humidity + "%");
+                                                }
+                                            });
+                                        }
+                                    }).start();
                                 }
                             }
                         }
                     }else { //불가
-                        droneImage.setImageResource(R.drawable.dronestop);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        droneImage.setImageResource(R.drawable.dronestop);
+                                    }
+                                });
+                            }
+                        }).start();
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
+
+
         return value;
     }
 
+    public static class MyHandler extends Handler{
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+           if(msg.what == 0){
+               System.out.println("Handler sendEmptyMessage() 를 통한 handleMessage() 실행");
+           }
+        }
+    }
 
 }
 
