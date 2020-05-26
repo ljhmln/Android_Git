@@ -1,7 +1,12 @@
 package com.example.topnavigation_20200517;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.location.LocationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +41,7 @@ import java.util.Date;
 
 public class frag1 extends Fragment {
     private View view;
+    private FragmentActivity mcontext;
 
     SimpleDateFormat getDate = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat getTime = new SimpleDateFormat("kkmm");
@@ -65,7 +77,8 @@ public class frag1 extends Fragment {
     String wind_speed; //풍속
     String temperatures; // 기온
     String humidity; //습도
-
+    double longitude=126.97; //경도
+    double latitude=37.56; //위도
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,6 +89,8 @@ public class frag1 extends Fragment {
         wind_speedText = view.findViewById(R.id.wind_speed);
         Advertising = view.findViewById(R.id.advertising);
         currentP = view.findViewById(R.id.currentP);
+
+
         frag1Thread thread = new frag1Thread();
         thread.start();
         return view;
@@ -88,6 +103,8 @@ public class frag1 extends Fragment {
                     public void run() {
         nowDate = getDate.format(date);
         nowTime = getTime.format(date);
+
+        getLocation();//위치값 받기
 
         nowHours = getHours.format(new Date());
         nowMinute = getMinute.format(new Date());
@@ -102,6 +119,23 @@ public class frag1 extends Fragment {
 
             }
         }
+
+        //현위치를 받아오는 메소드
+    public void getLocation() {
+        final LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+
+        if (ContextCompat.checkSelfPermission(this.getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+
+        } else {
+            Toast.makeText(this.getActivity(),"위치정보를 파악하려면 위치추적 허가를 하셔야 합니다.",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void getTime(){
 
@@ -249,6 +283,7 @@ public class frag1 extends Fragment {
                                 if(wind < 4){ //바람이 약하다
                                     wind_speed = wind + "m/s  |  보통";
 
+
                                 }else if(wind >= 4 && wind <9) { //바람이 약간 강하다
                                     wind_speed = wind + "m/s  |  약간 강";
 
@@ -302,11 +337,9 @@ public class frag1 extends Fragment {
                     e.printStackTrace();
                 }
             }
-
-
-
         return value;
     }
+
 
 }
 
