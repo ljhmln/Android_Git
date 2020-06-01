@@ -1,0 +1,2 @@
+rootProject.name='Monthly_Household_Account_Book'
+include ':app'

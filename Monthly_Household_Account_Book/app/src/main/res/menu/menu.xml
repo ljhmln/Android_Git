@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="돈"
+        android:enabled="true"
+        android:icon="@drawable/ic_money_money"
+        android:id="@+id/money"/>
+    <item
+        android:title="차트"
+        android:enabled="true"
+        android:icon="@drawable/ic_chart"
+        android:id="@+id/chart"/>
+    <item
+        android:title="저축"
+        android:enabled="true"
+        android:icon="@drawable/ic_saving"
+        android:id="@+id/saving"/>
+    <item
+        android:title="todo달력"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar"
+        android:id="@+id/calendar"/>
+</menu>
